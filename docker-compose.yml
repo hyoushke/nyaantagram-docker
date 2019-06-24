@@ -1,0 +1,36 @@
+version: '3'
+services:
+
+  nyaantagram.localhost.node1:
+    container_name: nyaantagram-node
+    image: nyaantagram/node
+    build:
+      context: .
+      dockerfile: docker/node/node.dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - nyaantagram-network
+    links:
+      - nyaantagram.localhost.mongo
+    depends_on:
+      - nyaantagram.localhost.mongo
+
+  nyaantagram.localhost.mongo:
+    container_name: nyaantagram-mongo
+    image: mongo:latest
+    volumes:
+          - ./data/mongodb:/data/db
+    ports: 
+      - "27017:27017"
+    networks:
+      - nyaantagram-network  
+
+
+
+
+ 
+
+networks:
+  nyaantagram-network:
+    driver: bridge
